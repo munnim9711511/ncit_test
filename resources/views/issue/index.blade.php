@@ -50,52 +50,73 @@
             </div>
         
 @if (true)
-      <div class="">
-                <div class="flex-col">
-                    <div class="">
-                        <form method="POST" action="/issue" enctype="multipart/form-data">
-                            @csrf
+    <div class="">
+        <div class="flex-col">
+            <div class="">
+                <form method="POST" action="/issue" enctype="multipart/form-data">
+                    @csrf
 
-                            <label for="title">Title</label>
-                            <input id="title" name="title" type="text"
-                                class="border w-full border-gray-200 rounded-md">
+                    <label for="title">Title</label>
+                           @error('title')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                    <input id="title" name="title" type="text"
+                        class="border w-full border-gray-200 rounded-md @error('title') border-red-500 @enderror"
+                        value="{{ old('title') }}">
+             
 
-                            <label for="assets" class="block text-sm font-medium text-gray-700">Assets:</label>
-                            <select id="assets" name="assets"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
-                                <option value="" selected>please select ....</option>
-                                @foreach ($assets as $asset)
-                                    <option value="{{ $asset->id }}">{{ $asset->name }}</option>
-                                @endforeach
-                            </select>
-                            <label for="category" class="block text-sm font-medium text-gray-700">Serverity:</label>
-                            <select id="category" name="Serverity"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
-                                <option value="" selected>please select ....</option>
-                                <option value="low">Low</option>
-                                <option value="medium">Medium</option>
-                                <option value="high">High</option>
-                            </select>
-                            <label for="category" class="block text-sm font-medium text-gray-700">Category:</label>
-                            <select id="category" name="category"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
-                                <option value="" selected>please select ....</option>
-                                <option value="Access">Access</option>
-                                <option value="Hardware">Hardware</option>
-                                <option value="Software">Software</option>
-                            </select>
+                    <label for="assets" class="block text-sm font-medium text-gray-700">Assets:</label>
+                       @error('assets')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                    <select id="assets" name="assets"
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 @error('assets') border-red-500 @enderror">
+                        <option value="" selected>please select ....</option>
+                        @foreach ($assets as $asset)
+                            <option value="{{ $asset->id }}" {{ old('assets') == $asset->id ? 'selected' : '' }}>{{ $asset->name }}</option>
+                        @endforeach
+                    </select>
+                 
 
-                            <label for="info" class="block text-sm font-medium text-gray-700">Issue</label>
-                            <textarea id="info" name="info" cols="30" rows="10"
-                                class="shadow-sm mt-1 block w-full border border-gray-100 rounded-2xl p-2"></textarea>
+                    <label for="Serverity" class="block text-sm font-medium text-gray-700">Severity:</label>
+                         @error('Serverity')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
 
-                            <button type="submit" class="bg-gray-500 m-4 p-2 text-white rounded-2xl w-full">send</button>
-                        </form>
+                    <select id="Serverity" name="Serverity"
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 @error('Serverity') border-red-500 @enderror">
+                        <option value="" selected>please select ....</option>
+                        <option value="low" {{ old('Serverity') == 'low' ? 'selected' : '' }}>Low</option>
+                        <option value="medium" {{ old('Serverity') == 'medium' ? 'selected' : '' }}>Medium</option>
+                        <option value="high" {{ old('Serverity') == 'high' ? 'selected' : '' }}>High</option>
+                    </select>
+               
+                    <label for="category" class="block text-sm font-medium text-gray-700">Category:</label>
+                            @error('category')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                    <select id="category" name="category"
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 @error('category') border-red-500 @enderror">
+                        <option value="" selected>please select ....</option>
+                        <option value="Access" {{ old('category') == 'Access' ? 'selected' : '' }}>Access</option>
+                        <option value="Hardware" {{ old('category') == 'Hardware' ? 'selected' : '' }}>Hardware</option>
+                        <option value="Software" {{ old('category') == 'Software' ? 'selected' : '' }}>Software</option>
+                    </select>
+            
 
+                    <label for="info" class="block text-sm font-medium text-gray-700">Issue</label>
+                              @error('info')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                    <textarea id="info" name="info" cols="30" rows="10"
+                        class="shadow-sm mt-1 block w-full border border-gray-100 rounded-2xl p-2 @error('info') border-red-500 @enderror">{{ old('info') }}</textarea>
+          
 
-                    </div>
-                </div>
+                    <button type="submit" class="bg-gray-500 m-4 p-2 text-white rounded-2xl w-full">send</button>
+                </form>
             </div>
+        </div>
+    </div>
 @endif
           
         </div>

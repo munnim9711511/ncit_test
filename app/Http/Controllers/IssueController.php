@@ -40,14 +40,28 @@ class IssueController extends Controller
     {
 
 
-        $issueCard = new IssueCard();
-        $issueCard->asset_id = $request->input('assets');
-        $issueCard->user_id = Auth::user()->id;
+        // validate request
+        $validated = $request->validate([
+            'assets' => 'required|exists:assets,id',
+            'title' => 'required|string|max:255',
+            'info' => 'required|string',
+            'category' => 'nullable|string|max:100',
+            // keep the original input name "Serverity" (note the capitalization)
+            'Serverity' => 'required|string|max:50',
+        ]);
 
-        $issueCard->issue = $request->input('info');
-        $issueCard->title = $request->input('title');
-        $issueCard->category = $request->input('category');
-        $issueCard->severity = $request->input('Serverity');
+        // ensure user is authenticated
+        if (!Auth::check()) {
+            return redirect()->back()->with('error', 'You must be logged in to submit an issue.');
+        }
+
+        $issueCard = new IssueCard();
+        $issueCard->asset_id = $validated['assets'];
+        $issueCard->user_id = Auth::id();
+        $issueCard->issue = $validated['info'];
+        $issueCard->title = $validated['title'];
+        $issueCard->category = $validated['category'] ?? null;
+        $issueCard->severity = $validated['Serverity'];
         $issueCard->save();
 
         return redirect()->back()->with('success', 'Issue submitted successfully.');
